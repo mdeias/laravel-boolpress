@@ -25,3 +25,4 @@ Route::get('prova', function(){
 });
 
 Route::get('posts', 'Api\PostController@index');
+Route::get('posts/{slug}', 'Admin\PostsController@show');
