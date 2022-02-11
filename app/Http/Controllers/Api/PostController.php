@@ -24,7 +24,8 @@ class PostController extends Controller
                 'title' => 'Nessun Post trovato',
                 'content' => '',
             ];
-            return response()->json($post);
         }
+
+        return response()->json($post);
     }
 }
