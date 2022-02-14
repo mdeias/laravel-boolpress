@@ -5,14 +5,15 @@
         <div v-if="success" class="container display">
             <div>
 
-                <h1>POSTS</h1>
+                <h1>{{title}}</h1>
 
                 <PostItem 
                 v-for="post in posts"
                 :key="post.id"
                 :post="post"
                 />
-        
+            <div class="navigation" v-if="globalPost">
+
                 <button
                 @click="getPosts(pages.current -1)"
                 :disabled="pages.current === 1"
@@ -33,14 +34,18 @@
                 :disabled="pages.current === pages.last"
                 >Next
                 </button>
+
+            </div>
             </div>
             <Sidebar 
             :tags="tags"
             :categories="categories"
             @getPostCategory="getPostCategory"
             @getPostTag="getPostTag"
+            @getAllPosts="getPosts"
             />
-    
+
+
         </div>
     <div v-else>
         <h2>{{error_msg}}</h2>
@@ -72,7 +77,9 @@ export default {
             tags: [],
             categories: [],
             success: true,
-            error_msg: ''
+            error_msg: '',
+            title: 'I MIEI POST',
+            globalPost: true
         }
     },
     mounted(){
@@ -86,6 +93,8 @@ export default {
             axios.get(this.apiUrl + '/posttag/' + slug_tag)
             .then(res=> {
                 this.posts = res.data.tag.posts;
+                this.globalPost = false;
+                this.title = 'I MIEI POST DIVISI PER TAG: ' + res.data.tag.name;
                 if(!res.data.success){
                     this.error_msg = res.data.error;
                     this.success = false;
@@ -99,6 +108,8 @@ export default {
             axios.get(this.apiUrl + '/postcategory/' + slug_category)
             .then(res=> {
                 this.posts = res.data.category.posts;
+                this.globalPost = false;
+                this.title = 'I MIEI POST DIVISI PER CATEGORIA: ' + res.data.category.name;
                 if(!res.data.success){
                     this.error_msg = res.data.error;
                     this.success = false;
@@ -110,15 +121,17 @@ export default {
 
         getPosts(page = 1){
             this.reset();
+            
             axios.get(this.apiUrl + '?page=' + page)
             .then(res=>{
                 this.posts = res.data.posts.data;
+    
                 this.categories = res.data.categories;
                 this.tags = res.data.tags;
                 console.log(this.posts);
                 this.pages = {
-                    current: res.data.current_page,
-                    last: res.data.last_page
+                    current: res.data.posts.current_page,
+                    last: res.data.posts.last_page
                 }
             })
         },
@@ -127,6 +140,8 @@ export default {
             this.error_msg = '';
             this.success = true;
             this.posts = null;
+            this.title = 'I MIEI POST';
+            this.globalPost = true;
         }
     }
 

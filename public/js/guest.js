@@ -2154,6 +2154,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2170,7 +2175,9 @@ __webpack_require__.r(__webpack_exports__);
       tags: [],
       categories: [],
       success: true,
-      error_msg: ''
+      error_msg: '',
+      title: 'I MIEI POST',
+      globalPost: true
     };
   },
   mounted: function mounted() {
@@ -2183,6 +2190,8 @@ __webpack_require__.r(__webpack_exports__);
       this.reset();
       axios.get(this.apiUrl + '/posttag/' + slug_tag).then(function (res) {
         _this.posts = res.data.tag.posts;
+        _this.globalPost = false;
+        _this.title = 'I MIEI POST DIVISI PER TAG: ' + res.data.tag.name;
 
         if (!res.data.success) {
           _this.error_msg = res.data.error;
@@ -2196,6 +2205,8 @@ __webpack_require__.r(__webpack_exports__);
       this.reset();
       axios.get(this.apiUrl + '/postcategory/' + slug_category).then(function (res) {
         _this2.posts = res.data.category.posts;
+        _this2.globalPost = false;
+        _this2.title = 'I MIEI POST DIVISI PER CATEGORIA: ' + res.data.category.name;
 
         if (!res.data.success) {
           _this2.error_msg = res.data.error;
@@ -2214,8 +2225,8 @@ __webpack_require__.r(__webpack_exports__);
         _this3.tags = res.data.tags;
         console.log(_this3.posts);
         _this3.pages = {
-          current: res.data.current_page,
-          last: res.data.last_page
+          current: res.data.posts.current_page,
+          last: res.data.posts.last_page
         };
       });
     },
@@ -2223,6 +2234,8 @@ __webpack_require__.r(__webpack_exports__);
       this.error_msg = '';
       this.success = true;
       this.posts = null;
+      this.title = 'I MIEI POST';
+      this.globalPost = true;
     }
   }
 });
@@ -2384,6 +2397,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'Sidebar',
   props: {
@@ -2482,7 +2501,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".sidebar[data-v-438bbc0a] {\n  max-width: 25%;\n}\n.sidebar .box[data-v-438bbc0a] {\n  text-align: center;\n  border: 2px solid gray;\n  border-radius: 10px;\n  padding: 20px 10px;\n  margin-bottom: 10px;\n}\n.sidebar .box h3[data-v-438bbc0a] {\n  margin-bottom: 10px;\n}\n.sidebar .box span[data-v-438bbc0a] {\n  display: inline-block;\n  background-color: green;\n  padding: 3px 6px;\n  color: white;\n  font-size: 11px;\n  border-radius: 9px;\n  cursor: pointer;\n  margin: 5px;\n}\n.sidebar .box span[data-v-438bbc0a]:hover {\n  background-color: blue;\n}\n.sidebar .box .tag span[data-v-438bbc0a] {\n  background-color: red;\n}\n.sidebar .box .tag span[data-v-438bbc0a]:hover {\n  background-color: blue;\n}", ""]);
+exports.push([module.i, ".sidebar[data-v-438bbc0a] {\n  max-width: 25%;\n}\n.sidebar button[data-v-438bbc0a] {\n  padding: 3px 6px;\n  border: none;\n  border-radius: 7px;\n  background-color: cyan;\n  cursor: pointer;\n}\n.sidebar .box[data-v-438bbc0a] {\n  text-align: center;\n  border: 2px solid gray;\n  border-radius: 10px;\n  padding: 20px 10px;\n  margin-bottom: 10px;\n}\n.sidebar .box h3[data-v-438bbc0a] {\n  margin-bottom: 10px;\n}\n.sidebar .box span[data-v-438bbc0a] {\n  display: inline-block;\n  background-color: green;\n  padding: 3px 6px;\n  color: white;\n  font-size: 11px;\n  border-radius: 9px;\n  cursor: pointer;\n  margin: 5px;\n}\n.sidebar .box span[data-v-438bbc0a]:hover {\n  background-color: blue;\n}\n.sidebar .box .tag span[data-v-438bbc0a] {\n  background-color: red;\n}\n.sidebar .box .tag span[data-v-438bbc0a]:hover {\n  background-color: blue;\n}", ""]);
 
 // exports
 
@@ -3934,57 +3953,70 @@ var render = function () {
             _c(
               "div",
               [
-                _c("h1", [_vm._v("POSTS")]),
+                _c("h1", [_vm._v(_vm._s(_vm.title))]),
                 _vm._v(" "),
                 _vm._l(_vm.posts, function (post) {
                   return _c("PostItem", { key: post.id, attrs: { post: post } })
                 }),
                 _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    attrs: { disabled: _vm.pages.current === 1 },
-                    on: {
-                      click: function ($event) {
-                        return _vm.getPosts(_vm.pages.current - 1)
-                      },
-                    },
-                  },
-                  [_vm._v("Prev\n              ")]
-                ),
-                _vm._v(" "),
-                _vm._l(_vm.pages.last, function (page) {
-                  return _c(
-                    "button",
-                    {
-                      key: "button" + page,
-                      attrs: { disabled: page.current === page },
-                      on: {
-                        click: function ($event) {
-                          return _vm.getPosts(page)
-                        },
-                      },
-                    },
-                    [
-                      _vm._v(
-                        "\n              " + _vm._s(page) + "\n              "
-                      ),
-                    ]
-                  )
-                }),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    attrs: { disabled: _vm.pages.current === _vm.pages.last },
-                    on: {
-                      click: function ($event) {
-                        return _vm.getPosts(_vm.pages.current + 1)
-                      },
-                    },
-                  },
-                  [_vm._v("Next\n              ")]
-                ),
+                _vm.globalPost
+                  ? _c(
+                      "div",
+                      { staticClass: "navigation" },
+                      [
+                        _c(
+                          "button",
+                          {
+                            attrs: { disabled: _vm.pages.current === 1 },
+                            on: {
+                              click: function ($event) {
+                                return _vm.getPosts(_vm.pages.current - 1)
+                              },
+                            },
+                          },
+                          [_vm._v("Prev\n              ")]
+                        ),
+                        _vm._v(" "),
+                        _vm._l(_vm.pages.last, function (page) {
+                          return _c(
+                            "button",
+                            {
+                              key: "button" + page,
+                              attrs: { disabled: page.current === page },
+                              on: {
+                                click: function ($event) {
+                                  return _vm.getPosts(page)
+                                },
+                              },
+                            },
+                            [
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(page) +
+                                  "\n              "
+                              ),
+                            ]
+                          )
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            attrs: {
+                              disabled: _vm.pages.current === _vm.pages.last,
+                            },
+                            on: {
+                              click: function ($event) {
+                                return _vm.getPosts(_vm.pages.current + 1)
+                              },
+                            },
+                          },
+                          [_vm._v("Next\n              ")]
+                        ),
+                      ],
+                      2
+                    )
+                  : _vm._e(),
               ],
               2
             ),
@@ -3994,6 +4026,7 @@ var render = function () {
               on: {
                 getPostCategory: _vm.getPostCategory,
                 getPostTag: _vm.getPostTag,
+                getAllPosts: _vm.getPosts,
               },
             }),
           ],
@@ -4227,6 +4260,18 @@ var render = function () {
         0
       ),
     ]),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        on: {
+          click: function ($event) {
+            return _vm.$emit("getAllPosts")
+          },
+        },
+      },
+      [_vm._v("\n            Tutti i Post\n        ")]
+    ),
   ])
 }
 var staticRenderFns = []

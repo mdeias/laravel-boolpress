@@ -26,6 +26,12 @@
 
                 </div>
             </div>
+
+            <button
+            @click="$emit('getAllPosts')"
+            >
+                Tutti i Post
+            </button>
     </div>
 </template>
 
@@ -42,6 +48,13 @@ export default {
 <style lang="scss" scoped>
 .sidebar{
     max-width: 25%;
+    button{
+        padding: 3px 6px;
+        border: none;
+        border-radius: 7px;
+        background-color: cyan;
+        cursor: pointer;
+    }
     .box{
         
         text-align: center;
