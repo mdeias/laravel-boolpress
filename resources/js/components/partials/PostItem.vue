@@ -3,10 +3,10 @@
     <h3>
         <router-link :to="{name:'detail', params:{slug: post.slug}}"> {{post.title}} </router-link>
     </h3>
-    <p
+    <!-- <p
     class="category">
     {{ post.category.name }}
-    </p>
+    </p> -->
 
     <div v-if="post.tags">
         
